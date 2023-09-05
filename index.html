@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center my-3">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                <div class="row text-monospace border border-secondary">
+                    <button class="col-4 btn btn-light btn-lg border border-secondary rounded-0 py-4" onclick="movePlayer(this)" value="1">
+                        <span class="display-3 invisible">A</span>
+                    </button>
+                    <button class="col-4 btn btn-light btn-lg border border-secondary rounded-0 py-4" onclick="movePlayer(this)" value="2">
+                        <span class="display-3 invisible">A</span>
+                    </button>
+                    <button class="col-4 btn btn-light btn-lg border border-secondary rounded-0 py-4" onclick="movePlayer(this)" value="3">
+                        <span class="display-3 invisible">A</span>
+                    </button>
+                    <button class="col-4 btn btn-light btn-lg border border-secondary rounded-0 py-4" onclick="movePlayer(this)" value="4">
+                        <span class="display-3 invisible">A</span>
+                    </button>
+                    <button class="col-4 btn btn-light btn-lg border border-secondary rounded-0 py-4" onclick="movePlayer(this)" value="5">
+                        <span class="display-3 invisible">A</span>
+                    </button>
+                    <button class="col-4 btn btn-light btn-lg border border-secondary rounded-0 py-4" onclick="movePlayer(this)" value="6">
+                        <span class="display-3 invisible">A</span>
+                    </button>
+                    <button class="col-4 btn btn-light btn-lg border border-secondary rounded-0 py-4" onclick="movePlayer(this)" value="7">
+                        <span class="display-3 invisible">A</span>
+                    </button>
+                    <button class="col-4 btn btn-light btn-lg border border-secondary rounded-0 py-4" onclick="movePlayer(this)" value="8">
+                        <span class="display-3 invisible">A</span>
+                    </button>
+                    <button class="col-4 btn btn-light btn-lg border border-secondary rounded-0 py-4" onclick="movePlayer(this)" value="9">
+                        <span class="display-3 invisible">A</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="text-danger text-center text-monospace display-3 my-3" id="result">
+            
+        </div>
+    </div>
+    <script>
+        let switch_player = true; // oyuncylary gezeklesdirmek ucin, TRUE bolsa X, FALSE bolsa O hereket edyar
+        let game_over = false; // oyun gutardymy ya-da gutarmadymy diyip barlamak ucin
+        let x_moves = []; // X eden hereketleri
+        let o_moves = []; // O eden hereketleri
+
+        function movePlayer(e) {
+            // butonyn valuesyny barlayas, 0 bolsa on basylan buton
+            if (e.getAttribute('value') > 0 && !game_over) {
+
+                // butonyn icindaki spany almak ucin
+                let span = e.firstElementChild;
+
+                if (switch_player) { // eger TRUE bolsa X hereket edyar
+
+                    // spanyn icine X yazyar
+                    span.textContent = 'X';
+
+                    // X hereketlerine butonyn valuesyny gosyar. PUSH pythonda APPEND bolyar
+                    x_moves.push(parseInt(e.getAttribute('value')));
+
+                    // indiki gezek O hereket eder yaly FALSE edyar
+                    switch_player = false;
+                    
+                } else { // eger FALSE bolsa O hereket edyar
+
+                    // spanyn icine O yazyar
+                    span.textContent = 'O';
+
+                    // O hereketlerine butonyn valuesyny gosyar
+                    o_moves.push(parseInt(e.getAttribute('value')));
+
+                    // indiki gezek X hereket eder yaly FALSE edyar
+                    switch_player = true;
+
+                }
+
+                // butonyn valuesyny 0 edyar, yene basylmaz yaly
+                e.setAttribute('value', 0);
+
+                // butonyn icinde spanyn invisible clasyny pozyar
+                span.classList.remove('invisible');
+            } else {
+
+                // valuesy 0 bolan butona basanda gyzyl bolyar
+                e.classList.remove('btn-light');
+                e.classList.add('btn-danger');
+                setTimeout(function() {
+                    e.classList.remove('btn-danger');
+                    e.classList.add('btn-light');
+                }, 250)
+
+            }
+
+            // utan barmy diyip barlayar
+            checkWinner();
+        }
+        
+        function checkWinner() {
+            let winners = [
+                [1, 2, 3], [4, 5, 6], [7, 8, 9],
+                [1, 4, 7], [2, 5, 8], [3, 6, 9],
+                [1, 5, 9], [3, 5, 7]
+            ];
+            for (let i = 0; i < winners.length; i++) {
+                const winner = winners[i];
+                if (x_moves.includes(winner[0]) && x_moves.includes(winner[1]) && x_moves.includes(winner[2])) {
+                    document.getElementById('result').textContent = 'X utdy';
+                    game_over = true;
+                }
+                if (o_moves.includes(winner[0]) && o_moves.includes(winner[1]) && o_moves.includes(winner[2])) {
+                    document.getElementById('result').textContent = 'O utdy';
+                    game_over = true;
+                }
+            }
+            if (x_moves.length + o_moves.length == 9) {
+                document.getElementById('result').textContent = 'Deňlik';
+                game_over = true;
+            }
+        }
+    </script>
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
